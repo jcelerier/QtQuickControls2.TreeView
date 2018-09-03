@@ -94,7 +94,8 @@ public:
 
     TreeItemViewModel* insertChild(int row, QModelIndex index)
     {
-        if (childItems_.count() > row) {
+        if (childItems_.count() > row)
+        {
             TreeItemViewModel* child = new TreeItemViewModel(
                     this, index, flattenedTree_, proxyModel_, expandedMap_, hiddenMap_);
             int insertPoint = childItems_[row]->getLastChildRow();
@@ -103,7 +104,9 @@ public:
             return child;
         }
         else
-            addChild(index);
+        {
+            return addChild(index);
+        }
     }
 
     void setExpanded(bool expanded)
@@ -112,7 +115,7 @@ public:
         expandedMap_[sourceIndexAcrossProxyChain(sourceIndex_)] = expanded;
 
         QModelIndex proxyIndex = proxyModel_->mapFromSource(sourceIndex());
-        emit proxyModel_->dataChanged(proxyIndex, proxyIndex);
+        proxyModel_->dataChanged(proxyIndex, proxyIndex);
 
         if (proxyModel_->sourceModel()->canFetchMore(sourceIndex()))
             proxyModel_->sourceModel()->fetchMore(sourceIndex());
@@ -127,7 +130,7 @@ public:
         hiddenMap_[sourceIndex_] = hidden;
 
         QModelIndex proxyIndex = proxyModel_->mapFromSource(sourceIndex());
-        emit proxyModel_->dataChanged(proxyIndex, proxyIndex);
+        proxyModel_->dataChanged(proxyIndex, proxyIndex);
 
         for(TreeItemViewModel* child: childItems_)
             child->setHidden(isHidden_ || !isExpanded_);

@@ -125,6 +125,7 @@ public:
             default:
                 QAbstractProxyModel::setData(proxyIndex, value, role);
         }
+        return true;
     }
 
     QHash<int, QByteArray> roleNames() const override
@@ -137,7 +138,7 @@ public:
         return names;
     }
 
-private slots:
+private Q_SLOTS:
     void onLayoutChanged()
     {
         qDebug() << "onLayoutChanged";
@@ -147,7 +148,7 @@ private slots:
     void onSourceDataChanged(QModelIndex topLeft, QModelIndex bottomRight)
     {
         qDebug() << "onSourceDataChanged";
-        emit dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight));
+        dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight));
     }
 
     void onRowsInserted(const QModelIndex& parent, int first, int last)
